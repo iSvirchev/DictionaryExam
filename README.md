@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -40,8 +41,9 @@ public class Frame1 {
 	private int correct = 0;
 	private int wrong = 0;
 	private int hints = 0;
-	private int lastRow = 2; // TODO: needs work - "2" is just a random number to patch things up
+	private int lastRow = 1; // TODO: needs work - "2" is just a random number to patch things up
 	private JLabel lblAnswer;
+	private String hint;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -137,6 +139,7 @@ public class Frame1 {
 					}
 					answeredOrReadClicked ();
 					tfAnswer.setText(null);
+					lblAnswer.setText(" ");
 				}
 			}
 		});
@@ -149,6 +152,7 @@ public class Frame1 {
 		btnRead.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
+				btnRead.setText("Progress");
 				if (filePath == null) {
 					JOptionPane.showMessageDialog(null, "Please select a file first!");
 				} else {
@@ -172,7 +176,7 @@ public class Frame1 {
 		btnFileSelect.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				JFileChooser fileChooser = new JFileChooser("C:\\Users\\ClumsyBarber\\Desktop\\AF\\Kurs 3\\The Books"); // new file chooser with the following default directory
+				JFileChooser fileChooser = new JFileChooser("D:\\From drive D\\Format\\Desktop\\AF\\Kurs 3\\The Books"); // new file chooser with the following default directory
 				FileNameExtensionFilter filter = new FileNameExtensionFilter("Excel 97-2003 .xls", "xls"); // Filters and shows only .xls extension files
 				fileChooser.setFileFilter(filter); // implements filter
 				java.io.File file = null;
@@ -180,6 +184,9 @@ public class Frame1 {
 					file = fileChooser.getSelectedFile();
 					filePath = file.getPath();
 				}
+			btnFileSelect.setVisible(false);
+			/*btnRead.setBackground(Color.orange);*/
+		
 			}
 		});
 		btnFileSelect.setBounds(557, 196, 124, 23);
@@ -192,8 +199,12 @@ public class Frame1 {
 				if (filePath == null) {
 					JOptionPane.showMessageDialog(null, "Please select a file first!");
 				} else {
-					lblAnswer.setText(readCell(randomRow, 0));
-					hints++;
+					if(!lblAnswer.getText().equals(hint)) {
+						hint = readCell(randomRow,0); 
+						lblAnswer.setText(hint);
+						hints++;
+					}
+					
 					lblHints.setText("Hints: " + hints);
 				}
 			}
